@@ -643,16 +643,26 @@ button{font-family:inherit;}
 @media (min-width:700px){
   .footer-top{grid-template-columns:repeat(3,1fr);}
 }
-.footer-social{display:flex;gap:.8em;}
-.footer-social a{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:40px;height:40px;
-  border-radius:50%;
-  background:var(--cream);
-  border:2px solid var(--chrome);
-  text-decoration:none;
+.contact-actions{
+  display:flex;flex-wrap:wrap;gap:.6em;
+  margin-top:.6em;
 }
-.footer-social a:hover{background:var(--pink);}
+.contact-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;
+  padding:.5em 1.1em;
+  border-radius:999px;
+  font-family:var(--font-head);
+  font-weight:700;
+  font-size:.95rem;
+  text-decoration:none;
+  color:var(--ink);
+  border:2px solid var(--chrome);
+  background:var(--cream);
+}
+.contact-btn:hover{background:var(--pink);}
+.contact-btn-whatsapp{background:linear-gradient(135deg, var(--butter), #ffe27a);}
+.contact-btn-email{background:var(--blue);}
 .site-footer h3{font-size:1.1rem;color:var(--rose);}
 .site-footer p{font-size:.9rem;}
 .footer-bottom{
@@ -661,6 +671,7 @@ button{font-family:inherit;}
   text-align:center;
   margin:0;
 }
+.footer-disclaimer{margin-top:.3em;opacity:.75;}
 
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
@@ -760,17 +771,6 @@ button{font-family:inherit;}
 
   <footer class="site-footer">
     <div class="footer-top">
-      <div>
-        <h3>Follow the drops</h3>
-        <div class="footer-social">
-          <a id="footer-instagram" href="#" target="_blank" rel="noopener" aria-label="One Of One KE on Instagram">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="#3A2A3A" stroke-width="1.6"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#3A2A3A" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1.2" fill="#3A2A3A"/></svg>
-          </a>
-          <a id="footer-tiktok" href="#" target="_blank" rel="noopener" aria-label="One Of One KE on TikTok">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3c.5 2.2 2 3.7 4.2 4v2.6c-1.6.1-3-.4-4.2-1.3v6.4a5 5 0 1 1-4-4.9v2.6a2.4 2.4 0 1 0 1.6 2.3V3Z" fill="#3A2A3A"/></svg>
-          </a>
-        </div>
-      </div>
       <div class="sticky-note">
         <h3>Delivery &amp; pickup</h3>
         <p>Nairobi CBD pickup available. Courier delivery countrywide via Fargo/G4S, paid by buyer. Orders are confirmed over WhatsApp after payment.</p>
@@ -779,9 +779,18 @@ button{font-family:inherit;}
         <h3>About</h3>
         <p>One Of One KE sells genuinely single-piece vintage — no restocks, no duplicates. Follow our socials so you don't miss a drop.</p>
       </div>
+      <div class="sticky-note pink">
+        <h3>Want a shop like this?</h3>
+        <p>I build simple online shops for thrift and fashion sellers.</p>
+        <div class="contact-actions">
+          <a id="contact-whatsapp" class="contact-btn contact-btn-whatsapp" href="#" target="_blank" rel="noopener" aria-label="Message the builder on WhatsApp about a shop like this">WhatsApp me</a>
+          <a id="contact-email" class="contact-btn contact-btn-email" href="#" aria-label="Email the builder about a shop like this">Email me</a>
+        </div>
+      </div>
     </div>
     <div id="footer-mascot"></div>
-    <p class="footer-bottom">Built by Prasky · © <span id="footer-year"></span> One Of One KE</p>
+    <p class="footer-bottom">Built by <span id="footer-builder"></span> · © <span id="footer-year"></span> One Of One KE</p>
+    <p class="footer-bottom footer-disclaimer">Demo store, not a real shop.</p>
   </footer>
 
 </div>
@@ -793,9 +802,12 @@ button{font-family:inherit;}
 const CONFIG = {
   SHOP_NAME: "One Of One KE",
   DROP_DATE: "2026-12-05T18:00:00+03:00", // ISO date/time, EAT (UTC+3)
-  WHATSAPP_NUMBER: "254700000000",        // digits only, country code, no + or spaces
-  INSTAGRAM_URL: "https://instagram.com/oneofoneke",
-  TIKTOK_URL: "https://tiktok.com/@oneofoneke"
+  WHATSAPP_NUMBER: "254700000000",        // digits only, country code, no + or spaces — the shop's own order line
+
+  // CONTACT — the person who built this demo, shown in the footer's "Want a shop like this?" panel
+  CONTACT_WHATSAPP: "2547XXXXXXXX",  // international format, no + or spaces
+  CONTACT_EMAIL: "yourname@example.com",
+  BUILDER_NAME: "Skye"
 };
 
 // Mascot speech bubble text, shown in different spots around the page.
@@ -805,9 +817,12 @@ const MASCOT_MESSAGES = {
   footer: "Thanks for visiting! Come back for the next drop."
 };
 
-document.getElementById("footer-instagram").href = CONFIG.INSTAGRAM_URL;
-document.getElementById("footer-tiktok").href = CONFIG.TIKTOK_URL;
 document.getElementById("footer-year").textContent = new Date().getFullYear();
+document.getElementById("footer-builder").textContent = CONFIG.BUILDER_NAME;
+
+const builderWaMessage = `Hi ${CONFIG.BUILDER_NAME}, I saw the One Of One KE demo and I'd like a shop for my business`;
+document.getElementById("contact-whatsapp").href = `https://wa.me/${CONFIG.CONTACT_WHATSAPP}?text=${encodeURIComponent(builderWaMessage)}`;
+document.getElementById("contact-email").href = `mailto:${CONFIG.CONTACT_EMAIL}?subject=${encodeURIComponent("Shop website enquiry")}`;
 
 /* ============================================================
    HELPERS
